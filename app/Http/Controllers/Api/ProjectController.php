@@ -21,4 +21,17 @@ class ProjectController extends Controller
 
         return response()->json(compact('projects'));
     }
+
+
+    public function details($slug){
+
+        $project = Project::where('slug', $slug)->with('technologies', 'type')->first();
+
+        $project->cover_image?
+        $project->cover_image = url('storage/' . $project->cover_image) :
+        $project->cover_image = 'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png';
+
+        return response()->json($project);
+
+    }
 }
