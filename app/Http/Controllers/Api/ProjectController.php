@@ -9,7 +9,15 @@ use Illuminate\Http\Request;
 class ProjectController extends Controller
 {
     public function index(){
-        $projects = Project::with('technologies', 'type')->paginate(10);
+        $projects = Project::with('technologies', 'type')->paginate(5);
+
+        foreach($projects as $project){
+            if($project->cover_image){
+                $project->cover_image = url('storage/' . $project->cover_image);
+            }else {
+                $project->cover_image = 'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png';
+            }
+        }
 
         return response()->json(compact('projects'));
     }
